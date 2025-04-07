@@ -19,14 +19,54 @@
       font-size: 18px;
       margin-top: 30px;
     }
+    .codematrix-banner {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 40px;
+      color: #2c3e50;
+    }
   </style>
   <script>
     function start() {
-      const ad = prompt("Zəhmət olmasa adınızı daxil edin:");
-      const soyad = prompt("Zəhmət olmasa soyadınızı daxil edin:");
-      const yas = prompt("Zəhmət olmasa yaşınızı daxil edin:");
-      const yer = prompt("Zəhmət olmasa yaşadığınız yeri daxil edin:");
-      const secim = prompt("Hansı sayta keçmək istəyirsiniz? (codematrix / cybermatrix)");
+      const languages = {
+        az: {
+          name: "Azərbaycan dili",
+          prompts: {
+            ad: "Zəhmət olmasa adınızı daxil edin:",
+            soyad: "Zəhmət olmasa soyadınızı daxil edin:",
+            yas: "Zəhmət olmasa yaşınızı daxil edin:",
+            yer: "Zəhmət olmasa yaşadığınız yeri daxil edin:",
+            secim: "Hansı sayta keçmək istəyirsiniz? (codematrix / cybermatrix)",
+            xos: (ad, soyad, yas, yer) =>
+              `Xoş gəlmisiniz, ${ad} ${soyad}!\nYaş: ${yas}\nYaşadığınız yer: ${yer}\nİndi yönləndirilirsiniz...`,
+            yanlis: "Yanlış seçim etdiniz. Sayt bağlanır.",
+          },
+          banner: "Bura CodeMatrix dünyasıdır"
+        },
+        en: { name: "English", prompts: {/* ... */}, banner: "This is CodeMatrix world" },
+        tr: { name: "Türkçe", prompts: {/* ... */}, banner: "Burası CodeMatrix dünyasıdır" },
+        ru: { name: "Русский", prompts: {/* ... */}, banner: "Это мир CodeMatrix" },
+        de: { name: "Deutsch", prompts: {/* ... */}, banner: "Das ist die CodeMatrix-Welt" },
+        fr: { name: "Français", prompts: {/* ... */}, banner: "C'est le monde de CodeMatrix" },
+        es: { name: "Español", prompts: {/* ... */}, banner: "Este es el mundo de CodeMatrix" },
+        it: { name: "Italiano", prompts: {/* ... */}, banner: "Questo è il mondo di CodeMatrix" },
+        zh: { name: "中文", prompts: {/* ... */}, banner: "这是 CodeMatrix 的世界" },
+        ja: { name: "日本語", prompts: {/* ... */}, banner: "これは CodeMatrix の世界です" }
+      };
+
+      let dilKod = prompt("Dil seçin: az / en / tr / ru / de / fr / es / it / zh / ja");
+      if (!languages[dilKod]) {
+        alert("Naməlum dil seçildi. Azərbaycan dili ilə davam edilir.");
+        dilKod = "az";
+      }
+
+      const p = languages[dilKod].prompts;
+
+      const ad = prompt(p.ad);
+      const soyad = prompt(p.soyad);
+      const yas = prompt(p.yas);
+      const yer = prompt(p.yer);
+      const secim = prompt(p.secim);
 
       let link = "";
       if (secim.toLowerCase() === "codematrix") {
@@ -34,12 +74,17 @@
       } else if (secim.toLowerCase() === "cybermatrix") {
         link = "https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing";
       } else {
-        alert("Yanlış seçim etdiniz. Sayt bağlanır.");
+        alert(p.yanlis);
         return;
       }
 
-      alert(`Xoş gəlmisiniz, ${ad} ${soyad}!\nYaş: ${yas}\nYaşadığınız yer: ${yer}\nİndi yönləndirilirsiniz...`);
-      window.location.href = link;
+      alert(p.xos(ad, soyad, yas, yer));
+      document.getElementById("banner").innerText = languages[dilKod].banner;
+      document.getElementById("banner").style.display = "block";
+
+      setTimeout(() => {
+        window.location.href = link;
+      }, 3000);
     }
   </script>
 </head>
@@ -48,5 +93,6 @@
   <div class="info">
     Zəhmət olmasa bütün məlumatları düzgün daxil edin.
   </div>
+  <div id="banner" class="codematrix-banner" style="display: none;"></div>
 </body>
 </html>
