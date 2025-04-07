@@ -2,95 +2,51 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeMatrix Portal</title>
+  <title>Sayta giriş</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0d1117;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f0f4f8;
+      color: #333;
       text-align: center;
+      padding-top: 100px;
     }
-    input, select, button {
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 5px;
-      border: none;
-      font-size: 16px;
+    h1 {
+      font-size: 28px;
+      margin-bottom: 20px;
     }
-    button {
-      background-color: #1f6feb;
-      color: white;
-      cursor: pointer;
-    }
-    #step2 {
-      display: none;
+    .info {
+      font-size: 18px;
+      margin-top: 30px;
     }
   </style>
-</head>
-<body>
+  <script>
+    function start() {
+      const ad = prompt("Zəhmət olmasa adınızı daxil edin:");
+      const soyad = prompt("Zəhmət olmasa soyadınızı daxil edin:");
+      const yas = prompt("Zəhmət olmasa yaşınızı daxil edin:");
+      const yer = prompt("Zəhmət olmasa yaşadığınız yeri daxil edin:");
+      const secim = prompt("Hansı sayta keçmək istəyirsiniz? (codematrix / cybermatrix)");
 
-<h2>Adınızı daxil edin:</h2>
-<input type="text" id="username" placeholder="Adınız">
-<br>
-<button onclick="nextStep()">Davam et</button>
+      let link = "";
+      if (secim.toLowerCase() === "codematrix") {
+        link = "https://sites.google.com/view/codematrixcompany/ev";
+      } else if (secim.toLowerCase() === "cybermatrix") {
+        link = "https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing";
+      } else {
+        alert("Yanlış seçim etdiniz. Sayt bağlanır.");
+        return;
+      }
 
-<div id="step2">
-  <h2>Hansı sayta keçmək istəyirsən?</h2>
-  <select id="siteSelect">
-    <option value="">-- Seçim et --</option>
-    <option value="cyber">CyberMatrix</option>
-    <option value="code">CodeMatrix</option>
-  </select>
-  <br>
-  <button onclick="goToSite()">Sayta keç</button>
-</div>
-
-<script>
-  let username = '';
-
-  function nextStep() {
-    username = document.getElementById('username').value.trim();
-    if (username === '') {
-      alert('Zəhmət olmasa adınızı daxil edin!');
-      return;
+      alert(`Xoş gəlmisiniz, ${ad} ${soyad}!\nYaş: ${yas}\nYaşadığınız yer: ${yer}\nİndi yönləndirilirsiniz...`);
+      window.location.href = link;
     }
-    document.querySelector('h2').innerText = `Salam, ${username}!`;
-    document.getElementById('username').style.display = 'none';
-    document.querySelector('button').style.display = 'none';
-    document.getElementById('step2').style.display = 'block';
-  }
-
-  function goToSite() {
-    const selected = document.getElementById('siteSelect').value;
-
-    if (selected === 'cyber') {
-      window.location.href = 'https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing';
-    } else if (selected === 'code') {
-      window.location.href = 'https://sites.google.com/view/codematrix Azerbaijan company/ev';
-    } else {
-      alert('Zəhmət olmasa bir sayt seç!');
-    }
-  }
-</script>
-
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="az">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CodeMatrix Saytı</title>
-  <link rel="stylesheet" href="styles.css">
+  </script>
 </head>
-<body>
-  <div class="background-text">CodeMatrix-azerbaijan Company</div>
- <!-"CodeMatrix: Kiber təhlükəsizlik və etik hackerlik üzrə təlimlər və alətlər."-->
+<body onload="start()">
+  <h1>Sayta giriş hazırlanır...</h1>
+  <div class="info">
+    Zəhmət olmasa bütün məlumatları düzgün daxil edin.
+  </div>
 </body>
 </html>
