@@ -6,24 +6,47 @@
   <style>
     body { font-family: Arial; padding: 20px; }
     .hidden { display: none; }
+    #languagePopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    #languagePopupContent {
+      background-color: white;
+      padding: 20px;
+      text-align: center;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
 
-<h2>Language / Dil seçin</h2>
-<select id="languageSelect" onchange="showForm()">
-  <option value="">-- Select Language / Dil seçin --</option>
-  <option value="az">Azərbaycan dili</option>
-  <option value="en">English</option>
-  <option value="tr">Türkçe</option>
-  <option value="ru">Русский</option>
-  <option value="de">Deutsch</option>
-  <option value="fr">Français</option>
-  <option value="es">Español</option>
-  <option value="zh">中文</option>
-  <option value="ja">日本語</option>
-  <option value="ar">العربية</option>
-</select>
+<div id="languagePopup">
+  <div id="languagePopupContent">
+    <h2>Language / Dil seçin</h2>
+    <select id="languageSelect" onchange="showForm()">
+      <option value="">-- Select Language / Dil seçin --</option>
+      <option value="az">Azərbaycan dili</option>
+      <option value="en">English</option>
+      <option value="tr">Türkçe</option>
+      <option value="ru">Русский</option>
+      <option value="de">Deutsch</option>
+      <option value="fr">Français</option>
+      <option value="es">Español</option>
+      <option value="zh">中文</option>
+      <option value="ja">日本語</option>
+      <option value="ar">العربية</option>
+    </select>
+  </div>
+</div>
 
 <div id="formContainer" class="hidden">
   <h3 id="formTitle"></h3>
@@ -130,6 +153,8 @@
     document.getElementById("locationLabel").innerText = t.location;
     document.getElementById("siteLabel").innerText = t.site;
 
+    // Hide language popup and show the form
+    document.getElementById("languagePopup").style.display = 'none';
     document.getElementById("formContainer").classList.remove("hidden");
   }
 
