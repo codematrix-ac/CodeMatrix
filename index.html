@@ -1,87 +1,143 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Sayta Giriş</title>
+  <title>Dil Seçimi və Suallar</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f0f4f8;
-      color: #333;
-      text-align: center;
-      padding-top: 50px;
-    }
-    label, select, input, button {
-      display: block;
-      margin: 10px auto;
-      font-size: 16px;
-    }
-    .codematrix-banner {
-      font-size: 32px;
-      font-weight: bold;
-      margin-top: 30px;
-      color: #2c3e50;
-    }
+    body { font-family: Arial; padding: 20px; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
 
-  <h1>Sayta Giriş</h1>
+<h2>Language / Dil seçin</h2>
+<select id="languageSelect" onchange="showForm()">
+  <option value="">-- Select Language / Dil seçin --</option>
+  <option value="az">Azərbaycan dili</option>
+  <option value="en">English</option>
+  <option value="tr">Türkçe</option>
+  <option value="ru">Русский</option>
+  <option value="de">Deutsch</option>
+  <option value="fr">Français</option>
+  <option value="es">Español</option>
+  <option value="zh">中文</option>
+  <option value="ja">日本語</option>
+  <option value="ar">العربية</option>
+</select>
 
-  <label for="lang">Dil seçin:</label>
-  <select id="lang">
-    <option value="az">Azərbaycan dili</option>
-    <option value="en">English</option>
-    <option value="tr">Türkçe</option>
-    <option value="ru">Русский</option>
-    <option value="de">Deutsch</option>
-    <option value="fr">Français</option>
-    <option value="es">Español</option>
-    <option value="it">Italiano</option>
-    <option value="zh">中文</option>
-    <option value="ja">日本語</option>
-  </select>
+<div id="formContainer" class="hidden">
+  <h3 id="formTitle"></h3>
+  <label id="nameLabel"></label><br>
+  <input type="text" id="name"><br><br>
 
-  <input type="text" id="ad" placeholder="Adınız" />
-  <input type="text" id="soyad" placeholder="Soyadınız" />
-  <input type="number" id="yas" placeholder="Yaşınız" />
-  <input type="text" id="secim" placeholder="codematrix / cybermatrix" />
+  <label id="surnameLabel"></label><br>
+  <input type="text" id="surname"><br><br>
 
-  <button onclick="basla()">Sayta keç</button>
+  <label id="locationLabel"></label><br>
+  <input type="text" id="location"><br><br>
 
-  <div id="banner" class="codematrix-banner" style="display:none;"></div>
+  <label id="siteLabel"></label><br>
+  <select id="siteSelect">
+    <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">Cybermatrix</option>
+    <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
+  </select><br><br>
 
-  <script>
-    const dillər = {
-      az: { xos: "Xoş gəlmisiniz", banner: "Bura CodeMatrix dünyasıdır", yanlis: "Yanlış seçim etdiniz." },
-      en: { xos: "Welcome", banner: "This is the world of CodeMatrix", yanlis: "Invalid selection." },
-      tr: { xos: "Hoş geldiniz", banner: "Burası CodeMatrix dünyasıdır", yanlis: "Yanlış seçim." },
-      ru: { xos: "Добро пожаловать", banner: "Это мир CodeMatrix", yanlis: "Неверный выбор." },
-      de: { xos: "Willkommen", banner: "Das ist die CodeMatrix-Welt", yanlis: "Falsche Auswahl." },
-      fr: { xos: "Bienvenue", banner: "C'est le monde de CodeMatrix", yanlis: "Choix invalide." },
-      es: { xos: "Bienvenido", banner: "Este es el mundo de CodeMatrix", yanlis: "Selección inválida." },
-      it: { xos: "Benvenuto", banner: "Questo è il mondo di CodeMatrix", yanlis: "Scelta non valida." },
-      zh: { xos: "欢迎", banner: "这是 CodeMatrix 的世界", yanlis: "无效的选择。" },
-      ja: { xos: "ようこそ", banner: "これは CodeMatrix の世界です", yanlis: "無効な選択です。" }
-    };
+  <button onclick="goToSite()">Davam et</button>
+</div>
 
-    function basla() {
-      const lang = document.getElementById("lang").value;
-      const ad = document.getElementById("ad").value;
-      const soyad = document.getElementById("soyad").value;
-      const yas = document.getElementById("yas").value;
-      const secim = document.getElementById("secim").value.toLowerCase();
+<script>
+  const translations = {
+    az: {
+      title: "Zəhmət olmasa məlumatlarınızı doldurun",
+      name: "Adınız?",
+      surname: "Soyadınız?",
+      location: "Yaşadığınız yer?",
+      site: "Hansı sayta keçmək istəyirsiniz?"
+    },
+    en: {
+      title: "Please fill in your information",
+      name: "Your name?",
+      surname: "Your surname?",
+      location: "Where do you live?",
+      site: "Which site do you want to visit?"
+    },
+    tr: {
+      title: "Lütfen bilgilerinizi doldurun",
+      name: "Adınız?",
+      surname: "Soyadınız?",
+      location: "Yaşadığınız yer?",
+      site: "Hangi siteye geçmek istiyorsunuz?"
+    },
+    ru: {
+      title: "Пожалуйста, заполните информацию",
+      name: "Ваше имя?",
+      surname: "Ваша фамилия?",
+      location: "Где вы живете?",
+      site: "Какой сайт хотите посетить?"
+    },
+    de: {
+      title: "Bitte füllen Sie Ihre Informationen aus",
+      name: "Ihr Name?",
+      surname: "Ihr Nachname?",
+      location: "Wo wohnen Sie?",
+      site: "Welche Website möchten Sie besuchen?"
+    },
+    fr: {
+      title: "Veuillez remplir vos informations",
+      name: "Votre nom?",
+      surname: "Votre prénom?",
+      location: "Où habitez-vous?",
+      site: "Quel site souhaitez-vous visiter?"
+    },
+    es: {
+      title: "Por favor complete su información",
+      name: "¿Su nombre?",
+      surname: "¿Su apellido?",
+      location: "¿Dónde vive?",
+      site: "¿Qué sitio desea visitar?"
+    },
+    zh: {
+      title: "请填写您的信息",
+      name: "您的名字？",
+      surname: "您的姓氏？",
+      location: "您住在哪里？",
+      site: "您想访问哪个网站？"
+    },
+    ja: {
+      title: "情報を入力してください",
+      name: "お名前は？",
+      surname: "名字は？",
+      location: "どこに住んでいますか？",
+      site: "どのサイトにアクセスしますか？"
+    },
+    ar: {
+      title: "يرجى ملء معلوماتك",
+      name: "ما اسمك؟",
+      surname: "ما اسم العائلة؟",
+      location: "أين تعيش؟",
+      site: "أي موقع تريد زيارته؟"
+    }
+  };
 
-      let link = "";
-      if (secim === "codematrix") {
-        link = "https://sites.google.com/view/codematrixcompany/ev";
-      } else if (secim === "cybermatrix") {
-        link = "https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing";
-      } else {
-        alert(dillər[lang].yanlis);
-        return;
-      }
+  function showForm() {
+    const lang = document.getElementById("languageSelect").value;
+    if (!lang) return;
 
-      alert(`${dillər[lang].xos}, ${ad} ${soyad}!\nYaş: ${yas}\nYönləndirilirsiniz...`);
-      document.getElementById("banner").innerText = dillər[lang].banner;
-      document.getElementById("banner").style.display
+    const t = translations[lang];
+    document.getElementById("formTitle").innerText = t.title;
+    document.getElementById("nameLabel").innerText = t.name;
+    document.getElementById("surnameLabel").innerText = t.surname;
+    document.getElementById("locationLabel").innerText = t.location;
+    document.getElementById("siteLabel").innerText = t.site;
+
+    document.getElementById("formContainer").classList.remove("hidden");
+  }
+
+  function goToSite() {
+    const site = document.getElementById("siteSelect").value;
+    window.location.href = site;
+  }
+</script>
+
+</body>
+</html>
