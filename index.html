@@ -2,32 +2,214 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber giriş ekranı</title>
+  <title>Dil Seçimi və Suallar</title>
   <style>
     body {
-      background-color: #f4f6f8;
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f2f4f7;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
     }
-    .login-container {
-      background-color: white;
-      padding: 40px;
+
+    .hidden {
+      display: none;
+    }
+
+    #languagePopup, #formContainer {
+      background-color: #fff;
+      padding: 30px 40px;
       border-radius: 12px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
       width: 100%;
-      max-width: 400px;
-    }
-    .login-container h2 {
+      max-width: 500px;
       text-align: center;
-      margin-bottom: 24px;
-      color: #333;
     }
+
+    h2, h3 {
+      margin-bottom: 25px;
+      color: #1a1a1a;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 12px;
+      margin-top: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+    }
+
     label {
       display: block;
-      margin-top: 15px;
-      font-weight: bold
+      text-align: left;
+      font-weight: 600;
+      color: #333;
+      margin-top: 10px;
+    }
+
+    button {
+      background-color: #004080;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #002f5f;
+    }
+  </style>
+</head>
+<body>
+
+<div id="languagePopup">
+  <h2>Language / Dil seçin</h2>
+  <select id="languageSelect" onchange="showForm()">
+    <option value="">-- Select Language / Dil seçin --</option>
+    <option value="az">Azərbaycan dili</option>
+    <option value="en">English</option>
+    <option value="tr">Türkçe</option>
+    <option value="ru">Русский</option>
+    <option value="de">Deutsch</option>
+    <option value="fr">Français</option>
+    <option value="es">Español</option>
+    <option value="zh">中文</option>
+    <option value="ja">日本語</option>
+    <option value="ar">العربية</option>
+  </select>
+</div>
+
+<div id="formContainer" class="hidden">
+  <h3 id="formTitle"></h3>
+
+  <label id="nameLabel"></label>
+  <input type="text" id="name" required>
+
+  <label id="surnameLabel"></label>
+  <input type="text" id="surname" required>
+
+  <label id="locationLabel"></label>
+  <input type="text" id="location" required>
+
+  <label id="siteLabel"></label>
+  <select id="siteSelect">
+    <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">Cybermatrix</option>
+    <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
+  </select>
+
+  <button onclick="goToSite()">Davam et</button>
+</div>
+
+<script>
+  const translations = {
+    az: {
+      title: "Zəhmət olmasa məlumatlarınızı doldurun",
+      name: "Adınız",
+      surname: "Soyadınız",
+      location: "Yaşadığınız yer",
+      site: "Keçmək istədiyiniz sayt"
+    },
+    en: {
+      title: "Please fill in your information",
+      name: "Your name",
+      surname: "Your surname",
+      location: "Where do you live",
+      site: "Which site do you want to visit"
+    },
+    tr: {
+      title: "Lütfen bilgilerinizi doldurun",
+      name: "Adınız",
+      surname: "Soyadınız",
+      location: "Yaşadığınız yer",
+      site: "Geçmek istediğiniz site"
+    },
+    ru: {
+      title: "Пожалуйста, заполните информацию",
+      name: "Ваше имя",
+      surname: "Ваша фамилия",
+      location: "Место проживания",
+      site: "Сайт для перехода"
+    },
+    de: {
+      title: "Bitte füllen Sie Ihre Informationen aus",
+      name: "Ihr Name",
+      surname: "Ihr Nachname",
+      location: "Ihr Wohnort",
+      site: "Zu welcher Seite möchten Sie gehen?"
+    },
+    fr: {
+      title: "Veuillez remplir vos informations",
+      name: "Votre nom",
+      surname: "Votre prénom",
+      location: "Votre lieu de résidence",
+      site: "Quel site souhaitez-vous visiter?"
+    },
+    es: {
+      title: "Por favor complete su información",
+      name: "Su nombre",
+      surname: "Su apellido",
+      location: "Lugar de residencia",
+      site: "¿Qué sitio desea visitar?"
+    },
+    zh: {
+      title: "请填写您的信息",
+      name: "您的名字",
+      surname: "您的姓氏",
+      location: "您住在哪里",
+      site: "您想访问哪个网站？"
+    },
+    ja: {
+      title: "情報を入力してください",
+      name: "お名前",
+      surname: "名字",
+      location: "お住まいの地域",
+      site: "アクセスしたいサイト"
+    },
+    ar: {
+      title: "يرجى ملء معلوماتك",
+      name: "الاسم",
+      surname: "اسم العائلة",
+      location: "مكان الإقامة",
+      site: "الموقع الذي ترغب بزيارته"
+    }
+  };
+
+  function showForm() {
+    const lang = document.getElementById("languageSelect").value;
+    if (!lang) return;
+
+    const t = translations[lang];
+    document.getElementById("formTitle").innerText = t.title;
+    document.getElementById("nameLabel").innerText = t.name;
+    document.getElementById("surnameLabel").innerText = t.surname;
+    document.getElementById("locationLabel").innerText = t.location;
+    document.getElementById("siteLabel").innerText = t.site;
+
+    document.getElementById("languagePopup").classList.add("hidden");
+    document.getElementById("formContainer").classList.remove("hidden");
+  }
+
+  function goToSite() {
+    const name = document.getElementById("name").value.trim();
+    const surname = document.getElementById("surname").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const site = document.getElementById("siteSelect").value;
+
+    if (name && surname && location && site) {
+      window.location.href = site;
+    } else {
+      alert("Zəhmət olmasa bütün sahələri doldurun.");
+    }
+  }
+</script>
+
+</body>
+</html>
