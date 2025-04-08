@@ -1,168 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="az">
 <head>
   <meta charset="UTF-8">
-  <title>Dil Seçimi və Suallar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber giriş ekranı</title>
   <style>
-    body { font-family: Arial; padding: 20px; }
-    .hidden { display: none; }
-    #languagePopup {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0, 0, 0, 0.7);
+    body {
+      background-color: #f4f6f8;
+      font-family: Arial, sans-serif;
       display: flex;
-      justify-content: center;
       align-items: center;
-      z-index: 9999;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-    #languagePopupContent {
+    .login-container {
       background-color: white;
-      padding: 20px;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    .login-container h2 {
       text-align: center;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      margin-bottom: 24px;
+      color: #333;
     }
-  </style>
-</head>
-<body>
-
-<div id="languagePopup">
-  <div id="languagePopupContent">
-    <h2>Language / Dil seçin</h2>
-    <select id="languageSelect" onchange="showForm()">
-      <option value="">-- Select Language / Dil seçin --</option>
-      <option value="az">Azərbaycan dili</option>
-      <option value="en">English</option>
-      <option value="tr">Türkçe</option>
-      <option value="ru">Русский</option>
-      <option value="de">Deutsch</option>
-      <option value="fr">Français</option>
-      <option value="es">Español</option>
-      <option value="zh">中文</option>
-      <option value="ja">日本語</option>
-      <option value="ar">العربية</option>
-    </select>
-  </div>
-</div>
-
-<div id="formContainer" class="hidden">
-  <h3 id="formTitle"></h3>
-  <label id="nameLabel"></label><br>
-  <input type="text" id="name"><br><br>
-
-  <label id="surnameLabel"></label><br>
-  <input type="text" id="surname"><br><br>
-
-  <label id="locationLabel"></label><br>
-  <input type="text" id="location"><br><br>
-
-  <label id="siteLabel"></label><br>
-  <select id="siteSelect">
-    <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">Cybermatrix</option>
-    <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
-  </select><br><br>
-
-  <button onclick="goToSite()">Davam et</button>
-</div>
-
-<script>
-  const translations = {
-    az: {
-      title: "Zəhmət olmasa məlumatlarınızı doldurun",
-      name: "Adınız?",
-      surname: "Soyadınız?",
-      location: "Yaşadığınız yer?",
-      site: "Hansı sayta keçmək istəyirsiniz?"
-    },
-    en: {
-      title: "Please fill in your information",
-      name: "Your name?",
-      surname: "Your surname?",
-      location: "Where do you live?",
-      site: "Which site do you want to visit?"
-    },
-    tr: {
-      title: "Lütfen bilgilerinizi doldurun",
-      name: "Adınız?",
-      surname: "Soyadınız?",
-      location: "Yaşadığınız yer?",
-      site: "Hangi siteye geçmek istiyorsunuz?"
-    },
-    ru: {
-      title: "Пожалуйста, заполните информацию",
-      name: "Ваше имя?",
-      surname: "Ваша фамилия?",
-      location: "Где вы живете?",
-      site: "Какой сайт хотите посетить?"
-    },
-    de: {
-      title: "Bitte füllen Sie Ihre Informationen aus",
-      name: "Ihr Name?",
-      surname: "Ihr Nachname?",
-      location: "Wo wohnen Sie?",
-      site: "Welche Website möchten Sie besuchen?"
-    },
-    fr: {
-      title: "Veuillez remplir vos informations",
-      name: "Votre nom?",
-      surname: "Votre prénom?",
-      location: "Où habitez-vous?",
-      site: "Quel site souhaitez-vous visiter?"
-    },
-    es: {
-      title: "Por favor complete su información",
-      name: "¿Su nombre?",
-      surname: "¿Su apellido?",
-      location: "¿Dónde vive?",
-      site: "¿Qué sitio desea visitar?"
-    },
-    zh: {
-      title: "请填写您的信息",
-      name: "您的名字？",
-      surname: "您的姓氏？",
-      location: "您住在哪里？",
-      site: "您想访问哪个网站？"
-    },
-    ja: {
-      title: "情報を入力してください",
-      name: "お名前は？",
-      surname: "名字は？",
-      location: "どこに住んでいますか？",
-      site: "どのサイトにアクセスしますか？"
-    },
-    ar: {
-      title: "يرجى ملء معلوماتك",
-      name: "ما اسمك؟",
-      surname: "ما اسم العائلة؟",
-      location: "أين تعيش؟",
-      site: "أي موقع تريد زيارته؟"
-    }
-  };
-
-  function showForm() {
-    const lang = document.getElementById("languageSelect").value;
-    if (!lang) return;
-
-    const t = translations[lang];
-    document.getElementById("formTitle").innerText = t.title;
-    document.getElementById("nameLabel").innerText = t.name;
-    document.getElementById("surnameLabel").innerText = t.surname;
-    document.getElementById("locationLabel").innerText = t.location;
-    document.getElementById("siteLabel").innerText = t.site;
-
-    // Hide language popup and show the form
-    document.getElementById("languagePopup").style.display = 'none';
-    document.getElementById("formContainer").classList.remove("hidden");
-  }
-
-  function goToSite() {
-    const site = document.getElementById("siteSelect").value;
-    window.location.href = site;
-  }
-</script>
-
-</body>
-</html>
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: bold
