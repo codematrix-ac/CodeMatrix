@@ -1,115 +1,100 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
-  <title>Welcome</title>
+  <title>CyberMatrix Giriş</title>
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --bg-color: #ffffff;
+      --text-color: #000000;
+    }
+    [data-theme="dark"] {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+    }
     body {
       margin: 0;
       padding: 0;
-      font-family: "Segoe UI", sans-serif;
-      background: linear-gradient(to right, #1a2980, #26d0ce);
-      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      justify-content: center;
+      height: 100vh;
+      transition: background-color 0.4s, color 0.4s;
     }
-    .container {
-      text-align: center;
-      color: white;
+    .logo {
+      max-width: 200px;
+      margin-bottom: 30px;
     }
     #helloText {
-      font-size: 48px;
-      opacity: 0;
-      animation: fadeInText 2s ease forwards;
+      font-size: 40px;
+      font-weight: bold;
+      border-right: 3px solid var(--text-color);
+      white-space: nowrap;
+      overflow: hidden;
+      width: 0;
+      animation: typing 2s steps(6, end) forwards;
     }
-    @keyframes fadeInText {
-      to {
-        opacity: 1;
-      }
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 6ch; }
     }
     #formContainer {
-      margin-top: 30px;
-      background: white;
-      color: black;
-      padding: 25px 20px;
-      border-radius: 10px;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      margin-top: 40px;
+      text-align: center;
       display: none;
-      animation: fadeInForm 1.5s ease forwards;
-    }
-    @keyframes fadeInForm {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
     }
     input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      font-size: 15px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
+      padding: 10px;
+      margin: 8px;
+      font-size: 16px;
     }
-    button {
-      background-color: #004080;
-      color: white;
-      border: none;
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 8px 12px;
       cursor: pointer;
-    }
-    button:hover {
-      background-color: #003060;
     }
   </style>
 </head>
 <body>
 
-<div class="container">
+  <button class="theme-toggle" onclick="toggleTheme()">Dark/Light</button>
+
+  <img src="file-VJeaXrEN23dAone3ruiSBH" alt="Logo" class="logo">
+
   <div id="helloText">Hello!</div>
 
   <div id="formContainer">
-    <h3>Please enter your name and choose a site</h3>
-
-    <input type="text" id="nameInput" placeholder="Your name">
-
+    <h2>Adınızı daxil edin və keçin</h2>
+    <input type="text" id="name" placeholder="Adınız"><br>
     <select id="siteSelect">
       <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">CyberMatrix</option>
-      <option value="https://sites.google.com/view/codematrixcompany/ev">CodeMatrix</option>
-    </select>
-
-    <button onclick="goToSite()">Continue</button>
+      <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
+    </select><br>
+    <button onclick="goToSite()">Davam et</button>
   </div>
-</div>
 
-<script>
-  // Show form after "Hello!" animation
-  setTimeout(() => {
-    document.getElementById("formContainer").style.display = "block";
-  }, 2500);
+  <script>
+    // Typing effekti bitəndən sonra form görünsün
+    setTimeout(() => {
+      document.getElementById("formContainer").style.display = "block";
+    }, 2500);
 
-  function goToSite() {
-    const name = document.getElementById("nameInput").value.trim();
-    const site = document.getElementById("siteSelect").value;
-
-    if (!name || !site) {
-      alert("Please enter your name and select a site.");
-      return;
+    function goToSite() {
+      const site = document.getElementById("siteSelect").value;
+      window.location.href = site;
     }
 
-    alert(`Welcome, ${name}! Redirecting...`);
-    setTimeout(() => {
-      window.location.href = site;
-    }, 1000);
-  }
-</script>
+    function toggleTheme() {
+      const html = document.documentElement;
+      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+    }
+  </script>
 
 </body>
 </html>
