@@ -40,8 +40,8 @@
     }
 
     #typedText {
-      font-size: 38px;
-      font-weight: bold;
+      font-size: 32px;
+      font-weight: 600;
       border-right: 2px solid var(--text-color);
       white-space: nowrap;
       overflow: hidden;
@@ -102,10 +102,8 @@
   <button class="theme-toggle" onclick="toggleTheme()">Dark / Light</button>
 
   <div class="container">
-    <!-- Typewriter text -->
     <h1><span id="typedText"></span></h1>
 
-    <!-- Language Selection -->
     <select id="languageSelect" style="display:none;">
       <option value="">-- Dil seçin / Choose language --</option>
       <option value="az">Azərbaycan dili</option>
@@ -113,12 +111,11 @@
       <option value="tr">Türkçe</option>
     </select>
 
-    <!-- Form for user details -->
     <div class="form" id="formContainer" style="display:none;">
       <input type="text" id="name" placeholder="Adınız">
       <select id="siteSelect">
         <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">CyberMatrix</option>
-        <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
+        <option value="https://sites.google.com/view/codematrixcompany/ev">CodeMatrix</option>
       </select>
       <button onclick="goToSite()">Davam et</button>
     </div>
@@ -134,29 +131,28 @@
       tr: { name: "Adınız", button: "Devam et", hello: "Merhaba!" }
     };
 
-    // Typewriter effect
     document.addEventListener("DOMContentLoaded", () => {
       new Typed("#typedText", {
         strings: [
-          "Hello!",
-          "Welcome to CodeMatrix!",
-          "Let's explore cyber security...",
-          "Become an ethical hacker!"
+          "Welcome to CodeMatrix.",
+          "Your gateway to ethical hacking.",
+          "Explore cybersecurity with us.",
+          "Empower your digital skills."
         ],
-        typeSpeed: 60,
-        backSpeed: 40,
-        backDelay: 1200,
+        typeSpeed: 50,
+        backSpeed: 30,
+        backDelay: 1000,
         startDelay: 500,
-        loop: true,
-        onBegin: () => {
+        loop: false,
+        showCursor: true,
+        onComplete: () => {
           setTimeout(() => {
             document.getElementById("languageSelect").style.display = "block";
-          }, 2500); // show language selector a bit after typing starts
+          }, 800);
         }
       });
     });
 
-    // Language change
     document.getElementById("languageSelect").addEventListener("change", () => {
       const lang = document.getElementById("languageSelect").value;
       if (!lang) return;
