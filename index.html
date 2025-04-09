@@ -42,9 +42,8 @@
     #typedText {
       font-size: 32px;
       font-weight: 600;
-      border-right: 2px solid var(--text-color);
-      white-space: nowrap;
-      overflow: hidden;
+      opacity: 0;
+      transition: opacity 0.4s ease;
       margin-bottom: 20px;
       min-height: 50px;
     }
@@ -121,9 +120,6 @@
     </div>
   </div>
 
-  <!-- Typed.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
-
   <script>
     const translations = {
       az: { name: "Adınız", button: "Davam et", hello: "Salam!" },
@@ -132,25 +128,13 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-      new Typed("#typedText", {
-        strings: [
-          "Welcome to CodeMatrix.",
-          "Your gateway to ethical hacking.",
-          "Explore cybersecurity with us.",
-          "Empower your digital skills."
-        ],
-        typeSpeed: 50,
-        backSpeed: 30,
-        backDelay: 1000,
-        startDelay: 500,
-        loop: false,
-        showCursor: true,
-        onComplete: () => {
-          setTimeout(() => {
-            document.getElementById("languageSelect").style.display = "block";
-          }, 800);
-        }
-      });
+      const typedText = document.getElementById("typedText");
+      typedText.textContent = "Welcome to CodeMatrix.";
+      typedText.style.opacity = "1"; // Tündləşmə animasiyası
+
+      setTimeout(() => {
+        document.getElementById("languageSelect").style.display = "block";
+      }, 800); // Dil seçimi görünəcək
     });
 
     document.getElementById("languageSelect").addEventListener("change", () => {
