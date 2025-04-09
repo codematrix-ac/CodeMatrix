@@ -81,28 +81,6 @@
       0% { opacity: 0; }
       100% { opacity: 1; }
     }
-
-    .form {
-      z-index: 4;
-      position: absolute;
-      top: 60%;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    input, select, button {
-      padding: 12px;
-      font-size: 16px;
-      width: 300px;
-      border: none;
-      border-radius: 6px;
-      background-color: #f0f0f0;
-      color: black;
-    }
-
   </style>
 </head>
 <body>
@@ -121,47 +99,37 @@
 
   <!-- Questions Section -->
   <div class="question-container">
-    <div class="question" id="question1">Adınızı yazın:</div>
-    <div class="question" id="question2" style="animation-delay: 4s;">Hansı sayta daxil olmaq istəyirsiniz?</div>
-  </div>
-
-  <!-- Form Section -->
-  <div class="form" id="formContainer" style="display: none;">
-    <input type="text" id="name" placeholder="Adınız">
-    <select id="siteSelect">
-      <option value="https://sites.google.com/view/codematrixcompany/ev">CyberMatrix</option>
-      <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
-    </select>
-    <button onclick="goToSite()">Davam et</button>
+    <div class="question" id="question1">What is your name?</div>
+    <div class="question" id="question2" style="animation-delay: 4s;">Where are you from?</div>
+    <div class="question" id="question3" style="animation-delay: 8s;">What is your favorite color?</div>
   </div>
 
   <script>
-    const translations = {
-      az: { name: "Adınız", button: "Davam et", hello: "Salam!" },
-      en: { name: "Your name", button: "Continue", hello: "Hello!" },
-      tr: { name: "Adınız", button: "Devam et", hello: "Merhaba!" }
-    };
+    // Create multiple falling characters for the matrix effect
+    const matrix = document.querySelector('.matrix');
+    const chars = ['1', '0', '1', '0', '1', '0', '1', '0', '1', '1', '0'];
+    let numChars = 100;
+    
+    // Create the falling text elements dynamically
+    for (let i = 0; i < numChars; i++) {
+      const span = document.createElement('span');
+      span.textContent = chars[Math.floor(Math.random() * chars.length)];
+      span.style.left = `${Math.random() * 100}vw`;
+      span.style.animationDelay = `${Math.random() * 5}s`;
+      matrix.appendChild(span);
+    }
 
-    // Show questions after matrix animation
+    // Add functionality to fade in questions sequentially
     let questionIndex = 1;
     const questionElements = document.querySelectorAll('.question');
 
+    // Show next question every 4 seconds
     setInterval(() => {
       if (questionIndex < questionElements.length) {
         questionElements[questionIndex].style.animation = 'fadeIn 2s forwards';
         questionIndex++;
       }
-    }, 4000); // Show next question every 4 seconds
-
-    // Show form after questions
-    setTimeout(() => {
-      document.getElementById("formContainer").style.display = "flex";
-    }, 8000); // After 8 seconds, show the form
-
-    function goToSite() {
-      const site = document.getElementById("siteSelect").value;
-      window.location.href = site;
-    }
+    }, 4000);
   </script>
 
 </body>
