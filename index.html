@@ -39,21 +39,14 @@
       width: 90%;
     }
 
-    #helloText {
+    #typedText {
       font-size: 38px;
       font-weight: bold;
-      opacity: 0;
-      transform: scale(0.8);
-      animation: fadeInZoom 2s ease forwards;
+      border-right: 2px solid var(--text-color);
+      white-space: nowrap;
+      overflow: hidden;
       margin-bottom: 20px;
-      display: none;
-    }
-
-    @keyframes fadeInZoom {
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
+      min-height: 50px;
     }
 
     #languageSelect, input, select, button {
@@ -109,8 +102,8 @@
   <button class="theme-toggle" onclick="toggleTheme()">Dark / Light</button>
 
   <div class="container">
-    <!-- Hello text appears first -->
-    <div id="helloText">Hello!</div>
+    <!-- Typewriter text -->
+    <h1><span id="typedText"></span></h1>
 
     <!-- Language Selection -->
     <select id="languageSelect" style="display:none;">
@@ -131,6 +124,9 @@
     </div>
   </div>
 
+  <!-- Typed.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.12"></script>
+
   <script>
     const translations = {
       az: { name: "Adınız", button: "Davam et", hello: "Salam!" },
@@ -138,27 +134,37 @@
       tr: { name: "Adınız", button: "Devam et", hello: "Merhaba!" }
     };
 
-    // Show "Hello!" animation first
-    setTimeout(() => {
-      document.getElementById("helloText").style.display = "block";
-    }, 500); // After 500ms, "Hello!" will appear
-
-    // When the user selects a language, show form
-    document.getElementById("helloText").addEventListener("animationend", () => {
-      document.getElementById("languageSelect").style.display = "block"; // Show language select
+    // Typewriter effect
+    document.addEventListener("DOMContentLoaded", () => {
+      new Typed("#typedText", {
+        strings: [
+          "Hello!",
+          "Welcome to CodeMatrix!",
+          "Let's explore cyber security...",
+          "Become an ethical hacker!"
+        ],
+        typeSpeed: 60,
+        backSpeed: 40,
+        backDelay: 1200,
+        startDelay: 500,
+        loop: true,
+        onBegin: () => {
+          setTimeout(() => {
+            document.getElementById("languageSelect").style.display = "block";
+          }, 2500); // show language selector a bit after typing starts
+        }
+      });
     });
 
+    // Language change
     document.getElementById("languageSelect").addEventListener("change", () => {
       const lang = document.getElementById("languageSelect").value;
       if (!lang) return;
 
       const t = translations[lang];
-
-      // Update placeholders and button text according to language
       document.getElementById("name").placeholder = t.name;
-      document.querySelector("button").innerText = t.button;
+      document.querySelector("#formContainer button").innerText = t.button;
 
-      // Show form after language selection
       setTimeout(() => {
         document.getElementById("formContainer").style.display = "flex";
       }, 500);
