@@ -45,6 +45,21 @@
       }
     }
 
+    .content {
+      z-index: 2;
+      color: white;
+      font-size: 40px;
+      text-align: center;
+      animation: matrixText 3s infinite;
+      position: relative;
+    }
+
+    @keyframes matrixText {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
     .question-container {
       z-index: 3;
       position: absolute;
@@ -113,69 +128,39 @@
   <!-- Form Section -->
   <div class="form" id="formContainer" style="display: none;">
     <input type="text" id="name" placeholder="Adınız">
-    <div id="questionAnswerContainer"></div>
-    <button onclick="nextQuestion()">Növbəti</button>
+    <select id="siteSelect">
+      <option value="https://sites.google.com/view/codematrixcompany/ev">CyberMatrix</option>
+      <option value="https://codematrix-ac.github.io/CodeMatrix/">CodeMatrix</option>
+    </select>
+    <button onclick="goToSite()">Davam et</button>
   </div>
 
   <script>
     const translations = {
-      az: { name: "Adınız", button: "Növbəti", hello: "Salam!" },
-      en: { name: "Your name", button: "Next", hello: "Hello!" },
-      tr: { name: "Adınız", button: "Sonraki", hello: "Merhaba!" }
+      az: { name: "Adınız", button: "Davam et", hello: "Salam!" },
+      en: { name: "Your name", button: "Continue", hello: "Hello!" },
+      tr: { name: "Adınız", button: "Devam et", hello: "Merhaba!" }
     };
 
-    let questionIndex = 0;
-    const questions = [
-      { text: "Adınızı yazın:", answer: "" },
-      { text: "Hansı sayta daxil olmaq istəyirsiniz?", answer: "" }
-    ];
+    // Show questions after matrix animation
+    let questionIndex = 1;
+    const questionElements = document.querySelectorAll('.question');
 
-    const sites = {
-      "CyberMatrix": "https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing",
-      "CodeMatrix": "https://sites.google.com/view/codematrixcompany/ev"
-    };
-
-    // Show matrix animation
-    const matrixAnimation = () => {
-      let spanElements = [];
-      for (let i = 0; i < 20; i++) {
-        let span = document.createElement('span');
-        span.textContent = Math.random() > 0.5 ? '1' : '0';
-        span.style.left = `${Math.random() * 100}vw`;
-        span.style.animationDelay = `${Math.random() * 5}s`;
-        document.querySelector('.matrix').appendChild(span);
-        spanElements.push(span);
+    setInterval(() => {
+      if (questionIndex < questionElements.length) {
+        questionElements[questionIndex].style.animation = 'fadeIn 2s forwards';
+        questionIndex++;
       }
-    };
+    }, 4000); // Show next question every 4 seconds
 
-    matrixAnimation();
+    // Show form after questions
+    setTimeout(() => {
+      document.getElementById("formContainer").style.display = "flex";
+    }, 8000); // After 8 seconds, show the form
 
-    function nextQuestion() {
-      const input = document.getElementById("name").value;
-      questions[questionIndex].answer = input;
-
-      // Clear input field
-      document.getElementById("name").value = "";
-
-      if (questionIndex === 0) {
-        // After the first question, display the site selection
-        document.getElementById("questionAnswerContainer").innerHTML = `
-          <select id="siteSelect">
-            <option value="CyberMatrix">CyberMatrix</option>
-            <option value="CodeMatrix">CodeMatrix</option>
-          </select>
-        `;
-      } else {
-        // After the second question, submit the data and redirect
-        const selectedSite = document.getElementById("siteSelect").value;
-        window.location.href = sites[selectedSite];
-      }
-
-      // Move to next question
-      questionIndex++;
-      if (questionIndex < questions.length) {
-        document.getElementById("question" + (questionIndex + 1)).style.animation = 'fadeIn 2s forwards';
-      }
+    function goToSite() {
+      const site = document.getElementById("siteSelect").value;
+      window.location.href = site;
     }
   </script>
 
