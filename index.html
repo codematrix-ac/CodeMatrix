@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Matrix Animation</title>
+  <title>Matrix with Questions</title>
   <style>
     body {
       margin: 0;
@@ -45,25 +45,48 @@
       }
     }
 
-    @keyframes matrixText {
-      0% { opacity: 0; }
-      50% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
     .content {
       z-index: 2;
       color: white;
       font-size: 40px;
       text-align: center;
       animation: matrixText 3s infinite;
+      position: relative;
+    }
+
+    @keyframes matrixText {
+      0% { opacity: 0; }
+      50% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+
+    .question-container {
+      z-index: 3;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      color: white;
+      text-align: center;
+    }
+
+    .question {
+      font-size: 24px;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeIn 2s forwards;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Matrix effect - falling characters -->
   <div class="matrix">
-    <!-- Matrix effect - falling characters -->
     <span style="left: 50px; animation-delay: 0s;">1</span>
     <span style="left: 150px; animation-delay: 2s;">0</span>
     <span style="left: 250px; animation-delay: 1s;">1</span>
@@ -74,9 +97,11 @@
     <span style="left: 750px; animation-delay: 1s;">1</span>
   </div>
 
-  <div class="content">
-    <h1>Welcome to CodeMatrix</h1>
-    <p>The matrix is real.</p>
+  <!-- Questions Section -->
+  <div class="question-container">
+    <div class="question" id="question1">What is your name?</div>
+    <div class="question" id="question2" style="animation-delay: 4s;">Where are you from?</div>
+    <div class="question" id="question3" style="animation-delay: 8s;">What is your favorite color?</div>
   </div>
 
   <script>
@@ -93,6 +118,18 @@
       span.style.animationDelay = `${Math.random() * 5}s`;
       matrix.appendChild(span);
     }
+
+    // Add functionality to fade in questions sequentially
+    let questionIndex = 1;
+    const questionElements = document.querySelectorAll('.question');
+
+    // Show next question every 4 seconds
+    setInterval(() => {
+      if (questionIndex < questionElements.length) {
+        questionElements[questionIndex].style.animation = 'fadeIn 2s forwards';
+        questionIndex++;
+      }
+    }, 4000);
   </script>
 
 </body>
