@@ -1,167 +1,132 @@
-<!DOCTYPE html>
-<html lang="en" data-theme="light">
+<!DOCTYPE html><html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Welcome</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CodeMatrix Portal</title>
   <style>
-    :root {
-      --bg-color: #ffffff;
-      --text-color: #000000;
-      --input-bg: #f0f0f0;
-      --button-bg: #007BFF;
-      --button-text: #ffffff;
-    }
-
-    [data-theme="dark"] {
-      --bg-color: #1e1e1e;
-      --text-color: #f5f5f5;
-      --input-bg: #333333;
-      --button-bg: #4e8cff;
-      --button-text: #ffffff;
-    }
-
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      transition: background-color 0.4s, color 0.4s;
+      font-family: Arial, sans-serif;
+      transition: background 0.3s, color 0.3s;
+      overflow: hidden;
     }
-
+    .dark {
+      background: #0f0f0f;
+      color: #e0e0e0;
+    }
+    .light {
+      background: #ffffff;
+      color: #000000;
+    }
     .container {
-      text-align: center;
-      max-width: 400px;
-      width: 90%;
+      position: relative;
+      z-index: 10;
+      padding: 20px;
     }
-
-    #typedText {
-      font-size: 32px;
-      font-weight: 600;
-      opacity: 0;
-      animation: fadeIn 1s forwards;
-      margin-bottom: 20px;
-      min-height: 50px;
+    .language-select, .name-input, .site-select {
+      margin-top: 20px;
     }
-
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-      }
+    .background-codes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.85);
+      color: #00ff00;
+      font-family: monospace;
+      white-space: pre;
+      overflow: hidden;
+      z-index: 1;
+      pointer-events: none;
     }
-
-    #languageSelect, input, select, button {
-      padding: 12px;
+    .toggle-theme {
+      cursor: pointer;
       font-size: 16px;
-      width: 100%;
-      border: none;
-      border-radius: 6px;
-      background-color: var(--input-bg);
-      color: var(--text-color);
-      margin-top: 10px;
-    }
-
-    button {
-      background-color: var(--button-bg);
-      color: var(--button-text);
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background-color: #0056b3;
-    }
-
-    .form {
-      display: none;
-      flex-direction: column;
-      gap: 15px;
-      margin-top: 30px;
-    }
-
-    .theme-toggle {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 8px 12px;
-      background: none;
-      border: 1px solid var(--text-color);
-      border-radius: 6px;
-      cursor: pointer;
-      color: var(--text-color);
-      transition: all 0.3s;
-    }
-
-    .theme-toggle:hover {
-      background-color: var(--text-color);
-      color: var(--bg-color);
     }
   </style>
 </head>
-<body>
-
-  <button class="theme-toggle" onclick="toggleTheme()">Dark / Light</button>
-
+<body class="dark">
+  <div class="background-codes" id="bgCodes"></div>
   <div class="container">
-    <h1><span id="typedText">Welcome to CodeMatrix.</span></h1>
+    <div class="toggle-theme" onclick="toggleTheme()">Toggle Dark/Light</div><div class="language-select">
+  <label id="language-label">Dil seçin / Choose language:</label>
+  <select id="language" onchange="setLanguage()">
+    <option value="az">Azərbaycanca</option>
+    <option value="en">English</option>
+    <option value="tr">Türkçe</option>
+  </select>
+</div>
 
-    <select id="languageSelect" style="display:none;">
-      <option value="">-- Dil seçin / Choose language --</option>
-      <option value="az">Azərbaycan dili</option>
-      <option value="en">English</option>
-      <option value="tr">Türkçe</option>
-    </select>
+<div class="name-input">
+  <label id="name-label">Adınızı daxil edin:</label>
+  <input type="text" id="username" />
+</div>
 
-    <div class="form" id="formContainer" style="display:none;">
-      <input type="text" id="name" placeholder="Adınız">
-      <select id="siteSelect">
-        <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">CyberMatrix</option>
-        <option value="https://sites.google.com/view/codematrixcompany/ev">CodeMatrix</option>
-      </select>
-      <button onclick="goToSite()">Davam et</button>
-    </div>
-  </div>
+<div class="site-select">
+  <label id="site-label">Hansı sayta keçmək istəyirsiniz?</label>
+  <select id="site">
+    <option value="https://sites.google.com/view/codematrixcompany/ev">CodeMatrix</option>
+    <option value="https://sites.google.com/view/cybermatrix-azerbaijan-company?usp=sharing">CyberMatrix</option>
+  </select>
+  <button onclick="goToSite()">Keçid</button>
+</div>
 
-  <script>
-    const translations = {
-      az: { name: "Adınız", button: "Davam et", hello: "Salam!" },
-      en: { name: "Your name", button: "Continue", hello: "Hello!" },
-      tr: { name: "Adınız", button: "Devam et", hello: "Merhaba!" }
+  </div>  <script>
+    const texts = {
+      az: {
+        languageLabel: "Dil seçin:",
+        nameLabel: "Adınızı daxil edin:",
+        siteLabel: "Hansı sayta keçmək istəyirsiniz?",
+        button: "Keçid"
+      },
+      en: {
+        languageLabel: "Choose a language:",
+        nameLabel: "Enter your name:",
+        siteLabel: "Which site do you want to visit?",
+        button: "Go"
+      },
+      tr: {
+        languageLabel: "Dil seçin:",
+        nameLabel: "Adınızı girin:",
+        siteLabel: "Hangi siteye geçmek istiyorsunuz?",
+        button: "Git"
+      }
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      setTimeout(() => {
-        document.getElementById("languageSelect").style.display = "block";
-      }, 800); // Dil seçimi görünəcək
-    });
-
-    document.getElementById("languageSelect").addEventListener("change", () => {
-      const lang = document.getElementById("languageSelect").value;
-      if (!lang) return;
-
-      const t = translations[lang];
-      document.getElementById("name").placeholder = t.name;
-      document.querySelector("#formContainer button").innerText = t.button;
-
-      setTimeout(() => {
-        document.getElementById("formContainer").style.display = "flex";
-      }, 500);
-    });
-
     function toggleTheme() {
-      const html = document.documentElement;
-      html.dataset.theme = html.dataset.theme === "dark" ? "light" : "dark";
+      document.body.classList.toggle("dark");
+      document.body.classList.toggle("light");
+    }
+
+    function setLanguage() {
+      const lang = document.getElementById("language").value;
+      document.getElementById("language-label").innerText = texts[lang].languageLabel;
+      document.getElementById("name-label").innerText = texts[lang].nameLabel;
+      document.getElementById("site-label").innerText = texts[lang].siteLabel;
+      document.querySelector("button").innerText = texts[lang].button;
     }
 
     function goToSite() {
-      const site = document.getElementById("siteSelect").value;
+      const site = document.getElementById("site").value;
       window.location.href = site;
     }
-  </script>
 
-</body>
+    // Background code rain
+    const bg = document.getElementById("bgCodes");
+    const characters = "01";
+    let rain = Array(100).fill(0);
+
+    function drawMatrixRain() {
+      let output = "";
+      rain = rain.map((y, i) => {
+        const char = characters[Math.floor(Math.random() * characters.length)];
+        const spacing = " ".repeat(i % 3 === 0 ? 2 : 1);
+        output += spacing + char;
+        return y > 100 + Math.random() * 100 ? 0 : y + 1;
+      });
+      bg.innerText = output;
+    }
+    setInterval(drawMatrixRain, 75);
+  </script></body>
 </html>
