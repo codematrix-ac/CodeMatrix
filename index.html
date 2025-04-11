@@ -6,50 +6,78 @@
   <style>
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
+      font-family: 'Courier New', Courier, monospace;
       transition: background 0.3s, color 0.3s;
       overflow: hidden;
     }
     .dark {
-      background: #0f0f0f;
-      color: #e0e0e0;
+      background: radial-gradient(circle at center, #0f0f0f, #000000);
+      color: #00ff00;
     }
     .light {
-      background: #ffffff;
-      color: #000000;
+      background: linear-gradient(120deg, #f0f0f0, #ffffff);
+      color: #003300;
     }
     .container {
       position: relative;
       z-index: 10;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
       padding: 20px;
     }
     .language-select, .name-input, .site-select {
       margin-top: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 1s ease forwards;
     }
-    .background-codes {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      color: #00ff00;
-      font-family: monospace;
-      white-space: pre;
-      overflow: hidden;
-      z-index: 1;
-      pointer-events: none;
-    }
-    .toggle-theme {
-      cursor: pointer;
-      font-size: 16px;
-    }
+    .language-select { animation-delay: 0.5s; }
+    .name-input { animation-delay: 1s; }
+    .site-select { animation-delay: 1.5s; }@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.background-codes {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  color: #00ff00;
+  font-family: monospace;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.toggle-theme {
+  cursor: pointer;
+  font-size: 18px;
+  background: transparent;
+  border: 2px dashed currentColor;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  transition: all 0.3s;
+}
+.toggle-theme:hover {
+  background: rgba(0,255,0,0.1);
+}
+
   </style>
 </head>
 <body class="dark">
-  <div class="background-codes" id="bgCodes"></div>
+  <canvas id="bgCanvas" class="background-codes"></canvas>
   <div class="container">
-    <div class="toggle-theme" onclick="toggleTheme()">Toggle Dark/Light</div><div class="language-select">
+    <div class="toggle-theme" onclick="toggleTheme()">Toggle CodeMatrix Mode</div><div class="language-select">
   <label id="language-label">Dil seçin / Choose language:</label>
   <select id="language" onchange="setLanguage()">
     <option value="az">Azərbaycanca</option>
@@ -112,21 +140,33 @@
       window.location.href = site;
     }
 
-    // Background code rain
-    const bg = document.getElementById("bgCodes");
-    const characters = "01";
-    let rain = Array(100).fill(0);
+    // Matrix rain effect
+    const canvas = document.getElementById("bgCanvas");
+    const ctx = canvas.getContext("2d");
+    canvas.height = window.innerHeight;
+    canvas.width = window.innerWidth;
 
-    function drawMatrixRain() {
-      let output = "";
-      rain = rain.map((y, i) => {
-        const char = characters[Math.floor(Math.random() * characters.length)];
-        const spacing = " ".repeat(i % 3 === 0 ? 2 : 1);
-        output += spacing + char;
-        return y > 100 + Math.random() * 100 ? 0 : y + 1;
-      });
-      bg.innerText = output;
+    const characters = "01";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = Array(Math.floor(columns)).fill(1);
+
+    function draw() {
+      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "#0F0";
+      ctx.font = fontSize + "px monospace";
+
+      for (let i = 0; i < drops.length; i++) {
+        const text = characters[Math.floor(Math.random() * characters.length)];
+        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+          drops[i] = 0;
+        }
+        drops[i]++;
+      }
     }
-    setInterval(drawMatrixRain, 75);
+    setInterval(draw, 50);
   </script></body>
 </html>
